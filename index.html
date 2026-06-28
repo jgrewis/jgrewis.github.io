@@ -137,6 +137,104 @@
     color: var(--text-dim);
   }
 
+  /* ---------- Carte CV mise en avant ---------- */
+  .featured {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-bottom: 40px;
+    padding: 34px 36px;
+    border-radius: 30px;
+    text-decoration: none;
+    color: var(--text);
+    background:
+      linear-gradient(120deg, rgba(138, 180, 255, 0.16), rgba(179, 136, 255, 0.12) 55%, rgba(0, 200, 180, 0.10)),
+      var(--glass-bg);
+    border: 1px solid rgba(138, 180, 255, 0.35);
+    backdrop-filter: blur(28px) saturate(170%);
+    -webkit-backdrop-filter: blur(28px) saturate(170%);
+    box-shadow:
+      inset 0 1px 0 var(--glass-highlight),
+      0 28px 60px rgba(0, 0, 0, 0.45),
+      0 0 50px rgba(138, 180, 255, 0.18);
+    overflow: hidden;
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+  }
+  .featured::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(600px circle at var(--mx, 30%) var(--my, 0%), rgba(255, 255, 255, 0.16), transparent 45%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .featured:hover {
+    transform: translateY(-5px) scale(1.01);
+    border-color: rgba(138, 180, 255, 0.55);
+    box-shadow:
+      inset 0 1px 0 var(--glass-highlight),
+      0 38px 80px rgba(0, 0, 0, 0.55),
+      0 0 70px rgba(138, 180, 255, 0.28);
+  }
+  .featured:hover::before { opacity: 1; }
+  .featured .icon-lg {
+    flex-shrink: 0;
+    width: 78px;
+    height: 78px;
+    display: grid;
+    place-items: center;
+    font-size: 2.3rem;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid var(--glass-border);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+  .featured .body { flex: 1; }
+  .featured .pill {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #8ab4ff, #b388ff);
+    color: #0a0c14;
+  }
+  .featured h2 {
+    font-size: clamp(1.4rem, 3vw, 1.85rem);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .featured p {
+    margin-top: 8px;
+    max-width: 560px;
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: var(--text-dim);
+  }
+  .featured .cta {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid var(--glass-border);
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  .featured:hover .cta { background: rgba(255, 255, 255, 0.18); transform: translateX(4px); }
+  @media (max-width: 720px) {
+    .featured { flex-direction: column; align-items: flex-start; text-align: left; }
+    .featured .cta { align-self: stretch; justify-content: center; }
+  }
+
   /* ---------- Grille de cartes ---------- */
   .grid {
     display: grid;
@@ -234,7 +332,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .blob { animation: none; }
-    .card, .arrow, .gh-link { transition: none; }
+    .card, .featured, .arrow, .gh-link { transition: none; }
   }
 </style>
 </head>
@@ -262,6 +360,16 @@
     <h1>Mes pages,<br>réunies en un seul endroit.</h1>
     <p>Le point d'entrée vers mes réalisations web et mes outils publiés sur GitHub Pages. Chaque carte illustre une compétence : développement front-end, gestion de projet, automatisation et IA.</p>
   </section>
+
+  <a class="featured" href="https://jgrewis.github.io/CV-Jean-Philippe-Grewis/">
+    <div class="icon-lg">👤</div>
+    <div class="body">
+      <span class="pill">★ À la une</span>
+      <h2>Mon CV en ligne</h2>
+      <p>Découvrez mon parcours, mes compétences et mes réalisations sur une page dédiée : un CV interactif conçu et développé de A à Z.</p>
+    </div>
+    <span class="cta">Consulter mon CV →</span>
+  </a>
 
   <main class="grid">
 
@@ -317,7 +425,7 @@
 
 <script>
   // Reflet liquide qui suit la souris sur chaque carte
-  document.querySelectorAll('.card').forEach(card => {
+  document.querySelectorAll('.card, .featured').forEach(card => {
     card.addEventListener('pointermove', e => {
       const r = card.getBoundingClientRect();
       card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
